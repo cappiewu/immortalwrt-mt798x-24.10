@@ -1,0 +1,34 @@
+#!/bin/sh
+
+while uci -q delete system.@led[0]; do :; done
+
+uci add system led
+uci set system.@led[-1].name='SysLoad'
+uci set system.@led[-1].sysfs='blue:power'
+uci set system.@led[-1].trigger='heartbeat'
+
+uci add system led
+uci set system.@led[-1].name='WAN'
+uci set system.@led[-1].sysfs='blue:wan'
+uci set system.@led[-1].trigger='netdev'
+uci set system.@led[-1].dev='wan'
+uci add_list system.@led[-1].mode='tx'
+uci add_list system.@led[-1].mode='rx'
+
+uci add system led
+uci set system.@led[-1].name='USB'
+uci set system.@led[-1].sysfs='blue:usb'
+uci set system.@led[-1].trigger='usbport'
+uci add_list system.@led[-1].port='usb1-port2'
+
+uci add system led
+uci set system.@led[-1].name='WLAN'
+uci set system.@led[-1].sysfs='blue:wlan'
+uci set system.@led[-1].trigger='netdev'
+uci set system.@led[-1].dev='rax0'
+uci add_list system.@led[-1].mode='tx'
+uci add_list system.@led[-1].mode='rx'
+
+uci commit
+
+exit 0
